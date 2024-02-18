@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RedirectsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::prefix('redirects')->group(function () {
+    Route::get('/', [RedirectsController::class, 'index'])->name('redirects-index');
+    Route::get('/create', [RedirectsController::class, 'create'])->name('redirects-create');
+    Route::post('/', [RedirectsController::class, 'store'])->name('redirects-store');
 });
