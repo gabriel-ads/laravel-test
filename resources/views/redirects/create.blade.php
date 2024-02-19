@@ -6,7 +6,7 @@
 <div class="container mt-5">
     <h1>Crie um redirecionamento</h1>
     <hr>
-    <form action="{{route('redirects-store')}}" method="POST">
+    <form action="{{route('web-redirects-store')}}" method="POST">
         @csrf
         <div class="form-group">
             <div class="form-group">

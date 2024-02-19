@@ -20,3 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/get', [RedirectsController::class, 'index']);
+Route::post('/', [RedirectsController::class, 'store'])->name('redirects-store');
