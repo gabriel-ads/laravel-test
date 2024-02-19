@@ -6,7 +6,7 @@
 <div class="container mt-5">
     <h1>Edite um redirecionamento</h1>
     <hr>
-    <form action="{{route('redirects-update', ['id'=>$redirect->id])}}" method="POST">
+    <form action="{{route('web-redirects-update', ['id'=>$redirect->id])}}" method="POST">
         @csrf
         @method('PUT')
         <div class="form-group">

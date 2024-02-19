@@ -103,7 +103,7 @@ class RedirectsController extends Controller
     public function edit($id)
     {
 
-        $hashids = new Hashids('', 10); // pad to length 10
+        $hashids = new Hashids('', 10);
 
         $decodedId = $hashids->decode($id);
         $redirect = Redirect::where('id', $decodedId)->first();
@@ -116,10 +116,6 @@ class RedirectsController extends Controller
     }
     public function update(Request $request, $id)
     {
-        // $data = [
-        //     'status' => $request->status,
-        //      ''   
-        // ];
 
         $isApi =  request()->wantsJson() || str_starts_with(request()->path(), 'api');
         $destination = $request->destination;
@@ -159,7 +155,25 @@ class RedirectsController extends Controller
         }
 
         if ($isApi) {
-            return response()->json($updatedRedirect, Response::HTTP_OK); // Return the new post as JSON
+            return response()->json($updatedRedirect, Response::HTTP_OK);
+        } else {
+            return redirect()->route('redirects-index');
+        }
+    }
+
+    public function destroy($id)
+    {
+
+        $isApi =  request()->wantsJson() || str_starts_with(request()->path(), 'api');
+
+        $hashids = new Hashids('', 10);
+
+        $decodedId = $hashids->decode($id);
+
+        Redirect::where('id', $decodedId)->delete();
+
+        if ($isApi) {
+            return response()->json('Successfully deleted', Response::HTTP_OK);
         } else {
             return redirect()->route('redirects-index');
         }
