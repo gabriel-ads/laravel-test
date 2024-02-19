@@ -18,4 +18,11 @@ Route::prefix('redirects')->group(function () {
     Route::get('/', [RedirectsController::class, 'index'])->name('redirects-index');
     Route::get('/create', [RedirectsController::class, 'create'])->name('redirects-create');
     Route::post('/', [RedirectsController::class, 'store'])->name('web-redirects-store');
+    Route::get('/{id}/edit', [RedirectsController::class, 'edit'])->name('redirects-edit');
+    Route::put('/{id}', [RedirectsController::class, 'update'])->name('redirects-update');
+});
+
+
+Route::fallback(function () {
+    return "Erro!";
 });

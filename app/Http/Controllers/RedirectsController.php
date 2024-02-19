@@ -27,7 +27,7 @@ class RedirectsController extends Controller
 
     public function index()
     {
-        $hashids = new Hashids('', 10); // pad to length 10
+        $hashids = new Hashids('', 10);
 
         $redirects = Redirect::all();
 
@@ -62,7 +62,6 @@ class RedirectsController extends Controller
 
     public function store(Request $request)
     {
-
         $isApi =  request()->wantsJson() || str_starts_with(request()->path(), 'api');
         $destination = $request->destination;
         $httpStatusCode = $this->gethttpstatuscode($destination);
@@ -94,12 +93,73 @@ class RedirectsController extends Controller
             return response()->json("It will not be possible to save the root address", Response::HTTP_EXPECTATION_FAILED);
         }
 
-
-
-
-
         if ($isApi) {
             return response()->json($redirect, Response::HTTP_CREATED); // Return the new post as JSON
+        } else {
+            return redirect()->route('redirects-index');
+        }
+    }
+
+    public function edit($id)
+    {
+
+        $hashids = new Hashids('', 10); // pad to length 10
+
+        $decodedId = $hashids->decode($id);
+        $redirect = Redirect::where('id', $decodedId)->first();
+
+        if (!empty($redirect)) {
+            return view('redirects.edit', ['redirect' => $redirect]);
+        } else {
+            return redirect()->route('redirects-index');
+        }
+    }
+    public function update(Request $request, $id)
+    {
+        // $data = [
+        //     'status' => $request->status,
+        //      ''   
+        // ];
+
+        $isApi =  request()->wantsJson() || str_starts_with(request()->path(), 'api');
+        $destination = $request->destination;
+        $httpStatusCode = $this->gethttpstatuscode($destination);
+        $siteRoot = url('/');
+        $status = $request->status;
+
+        $validator = Validator::make($request->all(), [
+            'destination' => 'required|url:https',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->messages(), 400);
+        }
+
+        $validated = $validator->validated();
+
+        $updatedRedirect = new Redirect([
+            'destination' => $validated['destination'],
+            'status' => $isApi ? 1 : $status
+        ]);
+
+        $data = [
+            'status' => $updatedRedirect->status,
+            'destination' => $updatedRedirect->destination,
+            'updated_at' => date('Y-m-d H:i:s')
+        ];
+
+        if ($destination != $siteRoot) {
+            if ($httpStatusCode == 200) {
+                $updatedRedirect->where('id', $id)->update($data);
+            } else {
+                return response()->json("Http status code is not 200", Response::HTTP_EXPECTATION_FAILED);
+            }
+        } else {
+            return response()->json("It will not be possible to save the root address", Response::HTTP_EXPECTATION_FAILED);
+        }
+
+        if ($isApi) {
+            return response()->json($updatedRedirect, Response::HTTP_OK); // Return the new post as JSON
         } else {
             return redirect()->route('redirects-index');
         }
