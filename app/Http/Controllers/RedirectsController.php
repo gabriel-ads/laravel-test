@@ -178,4 +178,18 @@ class RedirectsController extends Controller
             return redirect()->route('redirects-index');
         }
     }
+    public function redirect($destination)
+    {
+
+
+        $data = [
+            'request_ip' => $_SERVER['REMOTE_ADDR'],
+            'user_agente' => $_SERVER['HTTP_USER_AGENT'],
+            'header_referer' => $_SERVER['HTTP_REFERER'],
+            'query_params' => $_SERVER['QUERY_STRING'],
+        ];
+
+
+        return response()->json($_SERVER['REMOTE_ADDR'], Response::HTTP_OK);
+    }
 }

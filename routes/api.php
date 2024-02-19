@@ -19,7 +19,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/get', [RedirectsController::class, 'index']);
+Route::get('/redirects', [RedirectsController::class, 'index']);
 Route::post('/', [RedirectsController::class, 'store'])->name('redirects-store');
 Route::put('/{id}', [RedirectsController::class, 'update'])->name('redirects-update');
 Route::delete('/{id}', [RedirectsController::class, 'destroy'])->name('redirects-destroy');
+Route::get('/{destination}', [RedirectsController::class, 'redirect'])->name('redirects-redirect');
