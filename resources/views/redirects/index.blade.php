@@ -25,14 +25,15 @@
             </tr>
         </thead>
         <tbody>
+
             @foreach($redirects as $redirect)
             <tr>
-                <th>{{$redirect->id}}</th>
-                <th scope="row">{{$redirect->status}}</th>
-                <th>{{$redirect->destination}}</th>
-                <th>{{$redirect->last_access}}</th>
-                <th>{{$redirect->created_at}}</th>
-                <th>{{$redirect->updated_at}}</th>
+                <th>{{$redirect['id']}}</th>
+                <th scope="row">{{$redirect['status']}}</th>
+                <th>{{$redirect['destination']}}</th>
+                <th>{{$redirect['last_access']}}</th>
+                <th>{{$redirect['created_at']}}</th>
+                <th>{{$redirect['updated_at']}}</th>
             </tr>
             @endforeach
         </tbody>

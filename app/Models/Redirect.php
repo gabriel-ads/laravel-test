@@ -10,7 +10,7 @@ class Redirect extends Model
     use HasFactory;
 
     protected $fillable = [
-        'code',
+        'id',
         'status',
         'destination',
         'last_access',
